@@ -11,8 +11,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login navigate={navigate} />} />
+        <Route path='/register' element={<Register navigate={navigate} />} />
         <Route path='/home' element={<Home />} />
         <Route path='*' element={<Navigate to="/login" />} />
       </Routes>

@@ -1,0 +1,24 @@
+body {
+    transition: 0.2s ease-in-out;
+    background-image: url('/background_img.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* background-position: center; */
+    font-family: 'Courier New', Courier, monospace
+}
+
+.light {
+    background-color: #252525;
+    color: white;
+}
+
+.dark {
+    background-color: whitesmoke;
+    color: black;
+}
+
+.heading {
+    font-size: 300%;
+    font-weight: bolder;
+}

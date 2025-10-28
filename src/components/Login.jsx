@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../Login.css'
+// import { Navigate,useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ navigate }) {
   const [theme, setTheme] = useState('dark');
   const [data, setData] = useState({})
 
@@ -33,9 +34,19 @@ function Login() {
 
     try {
       const result = await axios.post("http://localhost:3700/api/v1/user/login", data);
-      console.log(result.data)
+      console.log(result.data, result.status)
+
+      if (result.status === 200 && result.data.status === 'Active') {
+        alert(result.data.message)
+        navigate('/home');
+      } else if (result.data.status === 'Inactive') {
+        alert('User not active')
+      } else {
+        console.log('login failed')
+      }
+
     } catch (err) {
-      console.log("Login failed:", err);
+      console.log("Login failed:", err)
       alert("Login failed — check username or password");
     }
 
@@ -51,7 +62,7 @@ function Login() {
             onClick={
               () => { setTheme(theme === 'dark' ? 'light' : 'dark') }
             }><img src="/contrast.png" className='img' height="25px" width="25px" alt="Theam" /></button>
-            
+
         </span>
 
         <span className='main_body'>
@@ -87,7 +98,7 @@ function Login() {
 
         <span className='div_btn'>
           <button className={theme} onClick={loginFn} >Login</button>
-          <span className='register_txt'>Register</span>
+          <span className='register_txt' onClick={() => { navigate('/register') }}>Register</span>
         </span>
 
       </span>
