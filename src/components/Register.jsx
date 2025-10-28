@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 import '../Register.css'
 // const { name, age, usersname, password, address, city, country, phone_no } = req.body
 
-export function Register({ navigate }) {
+export function Register() {
     const [theme, setTheme] = useState('dark');
     const [data, setData] = useState({})
+    const navigate = useNavigate()
 
     useEffect(() => {
         document.body.className = theme;

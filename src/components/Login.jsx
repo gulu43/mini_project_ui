@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../Login.css'
-// import { Navigate,useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-function Login({ navigate }) {
+function Login() {
   const [theme, setTheme] = useState('dark');
   const [data, setData] = useState({})
+  const navigate = useNavigate()
 
   useEffect(() => {
     document.body.className = theme;
@@ -37,8 +38,11 @@ function Login({ navigate }) {
       console.log(result.data, result.status)
 
       if (result.status === 200 && result.data.status === 'Active') {
+        // header with isLoggedIn with true value is created
+        localStorage.setItem('isLoggedIn', true)
+
         alert(result.data.message)
-        navigate('/home');
+        navigate('/home')
       } else if (result.data.status === 'Inactive') {
         alert('User not active')
       } else {
