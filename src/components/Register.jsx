@@ -212,7 +212,7 @@ export function Register() {
 
                 <span className='div_btn'>
                     <button className={theme} onClick={registerFn} >Register</button>
-                    <span className='register_txt' onClick={() => { navigate('login') }}>Login</span>
+                    <span className='register_txt' onClick={() => { navigate('/login') }}>Login</span>
                 </span>
 
             </span>

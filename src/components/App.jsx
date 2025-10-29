@@ -16,10 +16,12 @@ function App() {
   const isLoggedInVar = localStorage.getItem('isLoggedIn') === 'true'
 
   useEffect(() => {
-    if (isLoggedInVar) {
-      navigate("/home");
-    } else {
-      navigate("/login");
+    if (window.location.pathname === "/") {
+      if (isLoggedInVar) {
+        navigate("/home", { replace: true });
+      } else {
+        navigate("/login", { replace: true });
+      }
     }
   }, [])
 
