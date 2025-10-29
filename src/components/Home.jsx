@@ -12,7 +12,7 @@ export function Home() {
     return (
         <>
             <h1>home component</h1>
-            <div onClick={logOutFn}>log-Out</div>
+            <span className='logout_lable' onClick={logOutFn}>log-Out</span>
         </>
     );
 }

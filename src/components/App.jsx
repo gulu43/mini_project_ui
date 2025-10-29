@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react'
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import Login from './Login.jsx';
+import { InvalidRouts } from './InvalidRouts.jsx';
 import { Register } from './Register.jsx';
 import { Home } from './Home.jsx';
 import '../App.css'
 import { ProtectedRoute } from './ProtectedRoute.jsx';
 
 function App() {
+
   const navigate = useNavigate()
-  const isLoggedInVar = localStorage.getItem('isLoggedIn')
+  const isLoggedInVar = localStorage.getItem('isLoggedIn') === 'true'
+
+  useEffect(() => {
+    isLoggedInVar ? <Navigate to="/home" /> : <Login />
+  }, [])
 
   return (
     <>
@@ -29,11 +35,10 @@ function App() {
             <Home />
           </ProtectedRoute>
         } />
-        <Route path='*' element={
-          // isLoggedInVar ? <Home navigate={navigate} /> : <Navigate to="/login" />
-          isLoggedInVar ? <Navigate to="/home" /> : <Navigate to="/login" />
 
-        } />
+        {/* // isLoggedInVar ? <Navigate to="/home" /> : <Navigate to="/login" /> */}
+        <Route path='*' element={<InvalidRouts />} />
+
       </Routes>
     </>
   )

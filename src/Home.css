@@ -22,3 +22,12 @@ body {
     font-size: 300%;
     font-weight: bolder;
 }
+.logout_lable{
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 3px;
+    font-weight: 600;
+    border-radius: 10px;
+
+    
+}
