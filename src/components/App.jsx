@@ -6,6 +6,9 @@ import { Register } from './Register.jsx';
 import { Home } from './Home.jsx';
 import '../App.css'
 import { ProtectedRoute } from './ProtectedRoute.jsx';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function App() {
 
@@ -13,7 +16,11 @@ function App() {
   const isLoggedInVar = localStorage.getItem('isLoggedIn') === 'true'
 
   useEffect(() => {
-    isLoggedInVar ? <Navigate to="/home" /> : <Login />
+    if (isLoggedInVar) {
+      navigate("/home");
+    } else {
+      navigate("/login");
+    }
   }, [])
 
   return (
@@ -40,7 +47,8 @@ function App() {
         <Route path='*' element={<InvalidRouts />} />
 
       </Routes>
-    </>
+      {/* Toast container for notifications */}
+      <ToastContainer position="top-right" autoClose={3000} theme="colored" />    </>
   )
 }
 
