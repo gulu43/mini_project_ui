@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 export function Register() {
     const [theme, setTheme] = useState('dark');
     const [data, setData] = useState({})
+    const [errData, setErrData] = useState({})
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -17,60 +18,44 @@ export function Register() {
         console.log('data: ', data)
     }, [data])
 
-    const valid_Data = () => {
-        if (!data.usersname) {
-            toast.warn('Username should not be empty');
-            return false;
-        }
+    useEffect(() => {
+        console.log('errData: ', errData)
+    }, [errData])
 
-        if (!data.name) {
-            toast.warn('Name should not be empty');
-            return false;
-        }
+    function valid_Data() {
+        const newErrors = {}
 
-        if (!data.age || data.age < 16 || data.age > 40) {
-            toast.warn('Age should be between 16 and 40');
-            return false;
-        }
+        if (!data.usersname) newErrors.umErr = 'Username should not be empty'
+        if (!data.name) newErrors.nameErr = 'Name should not be empty'
+        if (!data.age || data.age < 16 || data.age > 40) newErrors.ageErr = 'Age should be between 16 and 40'
+        if (!data.password || data.password.length < 4) newErrors.passErr = 'Password length should be at least 4 characters'
 
-        if (!data.password || data.password.length < 4) {
-            toast.warn('Password length should be at least 4 characters');
-            return false;
-        }
+        const phoneRegex = /^(\+91)?\s?[6-9][0-9]{9}$/
+        if (!phoneRegex.test(data.phone_no || '')) newErrors.phoneErr = 'Phone number must be 10 digits (+91 optional)'
 
-        const phoneRegex = /^(\+91)?\s?[6-9][0-9]{9}$/;
-        if (!phoneRegex.test(data.phone_no)) {
-            toast.warn('Phone number must be 10 digits (+91 optional)');
-            return false;
-        }
+        if (!data.address || data.address.trim() === '') newErrors.addressErr = 'Address should not be empty'
+        if (!data.city || data.city.trim() === '') newErrors.cityErr = 'City should not be empty'
+        if (!data.country || data.country.trim() === '') newErrors.countryErr = 'Country should not be empty'
+        if (!data.profile_photo) newErrors.profileErr = 'Profile photo is required'
 
-        if (!data.address || data.address.trim() === '') {
-            toast.warn('Address should not be empty');
-            return false;
-        }
+        setErrData(newErrors)
 
-        if (!data.city || data.city.trim() === '') {
-            toast.warn('City should not be empty');
-            return false;
-        }
+        // return true if no errors
+        return Object.keys(newErrors).length === 0
+    }
 
-        if (!data.country || data.country.trim() === '') {
-            toast.warn('Country should not be empty');
-            return false;
-        }
+    async function registerFn(e) {
 
-        if (!data.profile_photo) {
-            toast.warn('Profile photo is required');
-            return false;
-        }
+        e.preventDefault()
+        
+        console.log('valid_Data clled')        
+        // Clear old errors before validating
+        setErrData({})
 
-        return true;
-    };
-
-    async function registerFn() {
-
-        if (!valid_Data()) {
-            return;
+        const isValid = valid_Data()
+        if (!isValid) {
+            console.log('Validation failed, stopping...')
+            return
         }
 
         const formData = new FormData()
@@ -90,15 +75,18 @@ export function Register() {
             if (result.status == 201) {
                 navigate('/login')
             }
-            
+
+
+
         } catch (err) {
             if (err.status === 403) {
                 alert(`${err.response.data.message}`)
                 return
             }
-            console.log("Registration failed:", err.response.data.message)
+            console.log("Registration failed:", err?.response?.data?.message || err)
             alert("Registration failed")
         }
+
 
     }
     return (
@@ -116,6 +104,7 @@ export function Register() {
                 </span>
 
                 <span className='main_body'>
+                    {errData.umErr && <span className="error">{errData.umErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="username_inp">Username</label>
                         <input type="text" required className={theme} id='username_inp' onChange={(e) => {
@@ -123,9 +112,11 @@ export function Register() {
                                 ...prev,
                                 usersname: e.target.value
                             }))
+                            // valid_Data()
                         }} />
                     </span>
 
+                    {errData.nameErr && <span className="error">{errData.nameErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="name_inp">Name</label>
                         <input type="text" required className={theme} id='name_inp' onChange={(e) => {
@@ -136,6 +127,7 @@ export function Register() {
                         }} />
                     </span>
 
+                    {errData.ageErr && <span className="error">{errData.ageErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="age_inp">Age</label>
                         <input type="text" required className={theme} id='age_inp' onChange={(e) => {
@@ -146,6 +138,7 @@ export function Register() {
                         }} />
                     </span>
 
+                    {errData.passErr && <span className="error">{errData.passErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="password_inp">Password</label>
                         <input type="text" required className={theme} id='password_inp' onChange={(e) => {
@@ -156,6 +149,7 @@ export function Register() {
                         }} />
                     </span>
 
+                    {errData.phoneErr && <span className="error">{errData.phoneErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="phone_no_inp">Phone no.</label>
                         <input type="text" required className={theme} id='phone_no_inp' onChange={(e) => {
@@ -166,6 +160,7 @@ export function Register() {
                         }} />
                     </span>
 
+                    {errData.addressErr && <span className="error">{errData.addressErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="address_inp">Address</label>
                         <input type="text" required className={theme} id='address_inp' onChange={(e) => {
@@ -176,6 +171,7 @@ export function Register() {
                         }} />
                     </span>
 
+                    {errData.cityErr && <span className="error">{errData.cityErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="city_inp">City</label>
                         <input type="text" required className={theme} id='city_inp' onChange={(e) => {
@@ -186,6 +182,7 @@ export function Register() {
                         }} />
                     </span>
 
+                    {errData.countryErr && <span className="error">{errData.countryErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="country_inp">Country</label>
                         <input type="text" required className={theme} id='country_inp' onChange={(e) => {
@@ -196,6 +193,7 @@ export function Register() {
                         }} />
                     </span>
 
+                    {errData.profileErr && <span className="error">{errData.profileErr}</span>}
                     <span className='cont gap'>
                         <label htmlFor="profile_photo">Profile</label>
                         <input type="file" className={theme} id='profile_photo' onChange={(e) => {
@@ -211,7 +209,7 @@ export function Register() {
                 </span>
 
                 <span className='div_btn'>
-                    <button className={theme} onClick={registerFn} >Register</button>
+                    <button className={theme} onClick={(e) => { registerFn(e) }} >Register</button>
                     <span className='register_txt' onClick={() => { navigate('/login') }}>Login</span>
                 </span>
 
