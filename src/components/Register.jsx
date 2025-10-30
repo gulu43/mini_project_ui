@@ -23,7 +23,7 @@ export function Register() {
     }, [errData])
 
     function valid_Data() {
-        const newErrors = {}
+        let newErrors = {}
 
         if (!data.usersname) newErrors.umErr = 'Username should not be empty'
         if (!data.name) newErrors.nameErr = 'Name should not be empty'

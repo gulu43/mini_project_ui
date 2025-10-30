@@ -4,6 +4,7 @@ import Login from './Login.jsx';
 import { InvalidRouts } from './InvalidRouts.jsx';
 import { Register } from './Register.jsx';
 import { Home } from './Home.jsx';
+import UpdatePassword from './UpdatePassword.jsx';
 import '../App.css'
 import { ProtectedRoute } from './ProtectedRoute.jsx';
 import 'react-toastify/dist/ReactToastify.css';
@@ -44,6 +45,14 @@ function App() {
             <Home />
           </ProtectedRoute>
         } />
+
+        <Route path='/resetpassword' element={
+          <ProtectedRoute>
+            <UpdatePassword />
+          </ProtectedRoute>
+        } />
+
+
 
         {/* // isLoggedInVar ? <Navigate to="/home" /> : <Navigate to="/login" /> */}
         <Route path='*' element={<InvalidRouts />} />
